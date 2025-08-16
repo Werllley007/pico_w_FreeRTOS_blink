@@ -2,27 +2,29 @@
 Visualizar no minicom:
 alias minicompico='sudo minicom -b 115200 -o -D /dev/ttyACM0'
 */
-
-#include <stdio.h>
 #include "pico/stdlib.h"
-#include "hardware/gpio.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include <stdio.h>
 
-#define LED_BLUE 12
+const uint led_pin_red = 12;
 
-
-int main()
+void vBlinkTask()
 {
-    stdio_init_all();
-    gpio_init(LED_BLUE);
-    gpio_set_slew_rate(LED_BLUE, GPIO_SLEW_RATE_SLOW);
-    gpio_set_dir(LED_BLUE, true);
-    
-    while (true) {
-        gpio_put(LED_BLUE,true);
-        printf("Led Aceso\n");
-        sleep_ms(500);
-        gpio_put(LED_BLUE,false);
-        printf("Led apagado!\n");
-        sleep_ms(500);
+
+    for (;;){
+        gpio_put(led_pin_red, 1);
+        vTaskDelay(500);
+        gpio_put(led_pin_red, 0);
+        vTaskDelay(500);
+        printf("Blinking\n");
     }
+}
+
+void main(){
+    stdio_init_all();
+    gpio_init(led_pin_red);
+    gpio_set_dir(led_pin_red, GPIO_OUT);
+    xTaskCreate(vBlinkTask, "Blink Task", 128, NULL, 1, NULL);
+    vTaskStartScheduler();
 }

@@ -25,8 +25,14 @@ endif()
 # ====================================================================================
 set(PICO_BOARD pico_w CACHE STRING "Board type")
 
+# Set any variables required for importing libraries
+SET(FREERTOS_KERNEL_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/FreeRTOS-Kernel)
+
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
+
+# Pull in FreeRTOS
+include(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake)
 
 project(pico_w_FreeRTOS_blink C CXX ASM)
 
@@ -55,7 +61,9 @@ target_include_directories(pico_w_FreeRTOS_blink PRIVATE
 
 # Add any user requested libraries
 target_link_libraries(pico_w_FreeRTOS_blink 
-        
+        pico_stdlib 
+        FreeRTOS-Kernel 
+        FreeRTOS-Kernel-Heap4
         )
 
 pico_add_extra_outputs(pico_w_FreeRTOS_blink)
