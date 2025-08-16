@@ -53,7 +53,7 @@ Em seguida, adicione o FreeRTOS ao processo de build utilizando o comando includ
 include(${FREERTOS_KERNEL_PATH}/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.cmake)
 ```
 
-Depois adicione os includes para linkando a biblioteca:
+Depois adicione os includes para linkar as bibliotecas:
 ```bash
 pico_stdlib 
 FreeRTOS-Kernel 
